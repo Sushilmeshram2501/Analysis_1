@@ -12,7 +12,7 @@ st.title("Valuation matrix for nifty 50")
 col1,col2, col3=st.columns(3)
 
 with col2:
-    start_date=st.date_input('start date',min_value=datetime.date(2000,1,1),max_value=datetime.date.today(),value=datetime.date(2001,1,1))
+    start_date=st.date_input('start date',min_value=datetime.date(2005,1,1),max_value=datetime.date.today(),value=datetime.date(2001,1,1))
 
     start_date=start_date.strftime("%Y-%m-%d")
     # print(start_date)
@@ -89,6 +89,7 @@ custom_scale = [
 fig_ret=px.bar(nifty_returns,x=nifty_returns.index,y=nifty_returns,labels={'TotalReturnsIndex':'Yearly Returns','Date':'Year'},title='Nifty Yearly Returns',
                color=nifty_returns,color_continuous_scale=custom_scale)
 st.plotly_chart(fig_ret, use_container_width=True)
+
 
 
 
