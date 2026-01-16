@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📊 NSE Delivery % Analysis (1 Month)")
+st.title("NSE Delivery % Analysis")
 
 # ------------------ Load Symbols ------------------
 @st.cache_data(show_spinner=True)
@@ -37,7 +37,7 @@ def get_1_month_eq_bhavcopy(end_date=None):
     if end_date is None:
         end_date = datetime.today()
 
-    start_date = end_date - timedelta(days=30)
+    start_date = end_date - timedelta(days=40)
     all_data = []
 
     current_date = start_date
@@ -101,5 +101,6 @@ if symbol:
 
         st.plotly_chart(fig, use_container_width=True)
 
-        with st.expander("📄 View Data"):
+        with st.expander(" View Data"):
             st.dataframe(data, use_container_width=True)
+
