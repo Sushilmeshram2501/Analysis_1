@@ -133,5 +133,6 @@ st.plotly_chart(fig_corr, use_container_width=True)
 # -----------------------------
 # Data Table
 # -----------------------------
-with st.expander("📄 View Data"):
+with st.expander("View Data"):
     st.dataframe(combined_df.tail(200))
+
