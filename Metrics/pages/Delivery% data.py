@@ -27,7 +27,7 @@ col1, col2, col3 = st.columns([2, 3, 7])
 
 with col2:
     symbol = st.selectbox(
-        "🔍 Search Symbol",
+        "Search Symbol",
         symbols
     )
 
@@ -103,4 +103,5 @@ if symbol:
 
         with st.expander(" View Data"):
             st.dataframe(data, use_container_width=True)
+
 
