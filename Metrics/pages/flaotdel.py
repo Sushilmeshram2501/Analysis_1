@@ -17,7 +17,7 @@ st.title("Delivery Analysis")
 # ------------------ Load Symbols ------------------
 @st.cache_data(show_spinner=True)
 def load_eq_symbols():
-    bhav = nsepython.get_bhavcopy("31-01-2026")
+    bhav = nsepython.get_bhavcopy("30-01-2026")
     bhav.columns = bhav.columns.str.strip()
     bhav = bhav[bhav["SERIES"] == " EQ"]
     return sorted(bhav["SYMBOL"].unique().tolist())
