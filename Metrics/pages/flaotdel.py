@@ -7,7 +7,7 @@ from datetime import datetime
 
 # ------------------ Page Config ------------------
 st.set_page_config(page_title="Delivery % Analysis", layout="wide")
-st.title("📊 NSE Delivery % vs Float Shares")
+st.title("NSE Delivery % vs Float Shares")
 
 # ------------------ Functions ------------------
 
@@ -39,7 +39,7 @@ def get_rsi(symbol):
     try:
         data = yf.download(symbol + ".NS", period="3mo", interval="1d", multi_level_index=False,auto_adjust=True)
 
-        if data.empty or len(data) < 20:
+        if data.empty or len(data) < 15:
             return None
 
         rsi_series = calculate_RSI(data["Close"])
