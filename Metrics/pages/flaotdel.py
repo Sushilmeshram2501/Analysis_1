@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 import nsepython
 import pandas as pd
@@ -13,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("NSE Delivery % Analysis")
+st.title("Delivery Analysis")
 
 # ------------------ Load Symbols ------------------
 @st.cache_data(show_spinner=True)
@@ -64,7 +63,7 @@ def get_1_month_eq_bhavcopy(end_date=None):
                 bhav.columns = bhav.columns.str.strip()
 
                 # Filter EQ
-                bhav = bhav[bhav["SERIES"] == "EQ"]
+                bhav = bhav[bhav["SERIES"] == " EQ"]
 
                 # Required columns
                 bhav = bhav[
