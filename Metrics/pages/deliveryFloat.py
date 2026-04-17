@@ -89,7 +89,7 @@ def get_bhav_data(date_input):
         bhav["DEL%"] = (bhav["DELIV_QTY"] / bhav["FLOAT_SHARES"] * 100).round(2)
 
         # Filter high delivery stocks
-        bhav = bhav[bhav["DEL%"] > 3]
+        bhav = bhav[(bhav["DEL%"] > 2) & (bhav["CLOSE_PRICE"]>10)]
 
         # Sort and LIMIT (important for performance)
         bhav = bhav.sort_values("DEL%", ascending=False).head(30)
