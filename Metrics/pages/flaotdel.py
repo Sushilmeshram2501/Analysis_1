@@ -20,6 +20,35 @@ def get_float_value(symbol):
         return None
 
 
+# RSI Function
+def calculate_RSI(series, period=14):
+    delta = series.diff()
+
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+
+    avg_gain = gain.ewm(com=period-1, adjust=False).mean()
+    avg_loss = loss.ewm(com=period-1, adjust=False).mean()
+
+    rs = avg_gain / avg_loss
+    return 100 - (100 / (1 + rs))
+
+
+@st.cache_data(show_spinner=False)
+def get_rsi(symbol):
+    try:
+        data = yf.download(symbol + ".NS", period="3mo", interval="1d", progress=False)
+
+        if data.empty or len(data) < 20:
+            return None
+
+        rsi_series = calculate_RSI(data["Close"])
+        return round(rsi_series.iloc[-1], 2)
+
+    except:
+        return None
+
+
 @st.cache_data(show_spinner=True)
 def get_bhav_data(date_input):
     try:
@@ -51,20 +80,28 @@ def get_bhav_data(date_input):
 
         # Float shares
         bhav["FLOAT_SHARES"] = bhav["SYMBOL"].apply(get_float_value)
-
-        # Drop missing
-        bhav.dropna(inplace=True)
-
         bhav["FLOAT_SHARES"] = pd.to_numeric(bhav["FLOAT_SHARES"], errors="coerce")
+
+        # Drop missing float shares
+        bhav.dropna(subset=["FLOAT_SHARES"], inplace=True)
 
         # Delivery %
         bhav["DEL%"] = (bhav["DELIV_QTY"] / bhav["FLOAT_SHARES"] * 100).round(2)
 
-        # Filter
+        # Filter high delivery stocks
         bhav = bhav[bhav["DEL%"] > 3]
 
-        # Sort
-        bhav = bhav.sort_values("DEL%", ascending=False)
+        # Sort and LIMIT (important for performance)
+        bhav = bhav.sort_values("DEL%", ascending=False).head(30)
+
+        # ✅ RSI Calculation (after filtering for speed)
+        bhav["RSI"] = bhav["SYMBOL"].apply(get_rsi)
+
+        # Optional RSI Signal
+        # bhav["RSI_SIGNAL"] = np.where(
+        #     bhav["RSI"] > 70, "OVERBOUGHT",
+        #     np.where(bhav["RSI"] < 30, "OVERSOLD", "NEUTRAL")
+        # )
 
         return bhav
 
@@ -89,7 +126,7 @@ if st.button("Fetch Data"):
         st.success(f"Data fetched for {selected_date.strftime('%d-%m-%Y')}")
         st.dataframe(result, use_container_width=True)
 
-        # Optional download
+        # Download
         csv = result.to_csv().encode("utf-8")
         st.download_button(
             "⬇ Download CSV",
