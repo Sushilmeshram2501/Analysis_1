@@ -37,7 +37,7 @@ def calculate_RSI(series, period=14):
 @st.cache_data(show_spinner=False)
 def get_rsi(symbol):
     try:
-        data = yf.download(symbol + ".NS", period="3mo", interval="1d", progress=False)
+        data = yf.download(symbol + ".NS", period="3mo", interval="1d", multi_level_index=False,auto_adjust=True)
 
         if data.empty or len(data) < 20:
             return None
