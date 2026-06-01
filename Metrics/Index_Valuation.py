@@ -41,7 +41,7 @@ if data is None or data.empty:
     st.error("No valuation data returned from NSE API")
     st.stop()
 
-data["DATE"] = pd.to_datetime(data["DATE"])
+data.DATE = pd.to_datetime(data.DATE, format='mixed')
 data.set_index("DATE", inplace=True)
 data.sort_index(inplace=True)
 
